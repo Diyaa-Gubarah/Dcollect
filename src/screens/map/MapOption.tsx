@@ -27,7 +27,7 @@ const MapOption: React.FC<Props> = ({
   onOptionPress,
   onPowerPress,
   onTablePress,
-  onTranslatePress
+  onTranslatePress,
 }) => {
   const {theme} = useTheme();
 
@@ -56,6 +56,7 @@ const MapOption: React.FC<Props> = ({
       <NativeList
         data={Option}
         // sepGap="md"
+
         direction="vertical"
         keyExtractor={data => data.id.toString()}
         renderItem={data => (

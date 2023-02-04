@@ -64,7 +64,11 @@ const PickerButton: React.FC<PickerButtonProps> = ({onPress, loading}) => {
   const {theme} = useTheme();
 
   return (
-    <View style={[styles.buttonContainer,{backgroundColor:theme.colors.background}]}>
+    <View
+      style={[
+        styles.buttonContainer,
+        {backgroundColor: theme.colors.background},
+      ]}>
       {loading ? (
         <ActivityIndicator
           color={theme.colors.primary}
@@ -73,11 +77,13 @@ const PickerButton: React.FC<PickerButtonProps> = ({onPress, loading}) => {
         />
       ) : (
         <NativeTouch
+          padding="xsm"
+          rounded="xsm"
           onPress={onPress}
           background="primary"
           style={{flexDirection: 'row'}}>
           <View style={styles.innerButton}>
-            <NativeIcon color="background" name={'layers'} size={10} />
+            <NativeIcon color="background" name={'file-present'} size={10} />
             <View
               style={{
                 margin: theme.spacing.sm * 0.5,
