@@ -22,8 +22,8 @@ const NativeTouch = ({
   onPress,
   children,
   background = 'background',
-  padding = 'sm',
-  rounded = 'sm',
+  padding,
+  rounded,
   ...rest
 }: Props) => {
   const {theme} = useTheme();
@@ -33,8 +33,8 @@ const NativeTouch = ({
 
   const touchableStyle = {
     backgroundColor: theme.colors[background],
-    padding: theme.spacing[padding],
-    borderRadius: theme.spacing[rounded],
+    ...(padding &&{padding: theme.spacing[padding]}),
+    ...(rounded&&{borderRadius: theme.spacing[rounded]}),
   };
 
   if (Platform.OS === 'ios') {

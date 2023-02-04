@@ -3,20 +3,24 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {scale} from '../../utils/responsive';
 import {useTheme} from '../../hooks';
 
+export type TIcon =
+  | 'layers'
+  | 'add'
+  | 'remove'
+  | 'backup'
+  | 'file-present'
+  | 'format-list-numbered'
+  | 'palette'
+  | 'crop-free'
+  | 'more-horiz'
+  | 'power-settings-new';
+
 interface Props {
-  name:
-    | 'dashboard'
-    | 'layers'
-    | 'add'
-    | 'remove'
-    | 'file-download'
-    | 'dark_mode'
-    | 'wb_sunny'
-    | 'table-chart';
+  name: TIcon;
   color: ColorValues;
-  size?: 10 | 12 | 16;
+  size?: 8 | 10 | 12;
 }
-const NativeIcon: React.FC<Props> = ({name, color, size = 10}) => {
+const NativeIcon: React.FC<Props> = ({name, color, size = 8}) => {
   const {theme} = useTheme();
   return <Icon name={name} color={theme.colors[color]} size={scale(size)} />;
 };

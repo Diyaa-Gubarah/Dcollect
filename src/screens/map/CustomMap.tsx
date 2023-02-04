@@ -1,3 +1,4 @@
+import {BackHandler, StyleSheet, View} from 'react-native';
 import {Feature, GeoJson} from '../../types/geojon';
 import MapView, {Camera, Geojson, Region} from 'react-native-maps';
 import NativeModal, {ModalRef} from '../../components/modal/NativeModal';
@@ -9,7 +10,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useTheme, useTranslate} from '../../hooks';
 
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
@@ -18,6 +18,7 @@ import Picker from './Picker';
 import {Return} from '../../utils/getBounds';
 import calculateMinimumZoomLevel from '../../utils/calculateMinimumZoomLevel';
 import {collection} from '../../zuztand/store/polygon/selectors';
+import exportGeoJSON from '../../utils/exportGeoJSON';
 import {getData} from '../../utils/utils';
 import i18n from '../../i18n/i18n';
 import mapStyle from '../../config/mapStyle';
@@ -105,6 +106,59 @@ const Map: React.FC<PropsWithChildren> = () => {
    */
   const onThemePress = useCallback(() => {
     toggleTheme();
+  }, [theme.id]);
+  /**
+   * A callback function that is triggered when the fit button is pressed.
+   *
+   * @returns void
+   */
+  const onFitPress = useCallback(() => {
+    if (boundary) {
+      mapRef?.current?.fitToCoordinates([boundary[0], boundary[1]], {
+        animated: true,
+        edgePadding: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20,
+        },
+      });
+    }
+  }, [mapRef, boundary]);
+  /**
+   * A callback function that is triggered when the backup button is pressed.
+   *
+   * @returns void
+   */
+
+  const onBackupPress = useCallback(() => {
+    exportGeoJSON(GEOJSON);
+  }, [GEOJSON]);
+  /**
+   * A callback function that is triggered when the power button is pressed.
+   *
+   * @returns void
+   */
+  const onPowerPress = useCallback(() => {
+    exportGeoJSON(GEOJSON);
+    BackHandler.exitApp();
+  }, [GEOJSON]);
+
+  /**
+   * A callback function that is triggered when the table button is pressed.
+   *
+   * @returns void
+   */
+  const onTablePress = useCallback(() => {
+    console.log('onTablePress clicked');
+  }, [theme.id]);
+  /**
+   * A callback function that is triggered when the option button is pressed.
+   *
+   * @returns void
+   */
+  const onOptionPress = useCallback(() => {
+    console.log('onOptionPress clicked');
   }, [theme.id]);
 
   /**
@@ -196,6 +250,11 @@ const Map: React.FC<PropsWithChildren> = () => {
             onZoomOutPress={onZoomOutPress}
             onTypePress={onTypePress}
             onThemePress={onThemePress}
+            onFitPress={onFitPress}
+            onBackupPress={onBackupPress}
+            onPowerPress={onPowerPress}
+            onTablePress={onTablePress}
+            onOptionPress={onOptionPress}
           />
         </>
       )}

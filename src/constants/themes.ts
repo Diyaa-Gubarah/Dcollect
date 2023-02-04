@@ -29,11 +29,13 @@ const base: Omit<ITheme, 'colors' | 'id'> = {
         lg: scale(14),
         md: scale(12),
         sm: scale(8),
+        xsm: scale(4),
     },
     spacing: {
         lg: scale(16),
         md: scale(8),
         sm: scale(4),
+        xsm: scale(2),
     },
     fonts: {
         header: 'System',

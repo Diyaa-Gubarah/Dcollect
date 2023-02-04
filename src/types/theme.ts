@@ -1,7 +1,7 @@
 import React from "react";
 
 export type ColorValues = "primary" | "background" | "textPrimary" | "textSecondary"
-export type SpaceValues = "sm" | "md" | "lg"
+export type SpaceValues = "sm" | "md" | "lg" | "xsm"
 
 export interface IColorTheme {
     primary: string;
@@ -14,6 +14,7 @@ export interface ISizeTheme {
     lg: number;
     md: number;
     sm: number;
+    xsm: number;
 }
 export interface IFontTheme {
     header: string;
