@@ -14,5 +14,6 @@ export const Option: IOption[] = [
     { id: 6, icon: "backup" },
     { id: 7, icon: "format-list-numbered" },
     { id: 8, icon: "palette" },
-    { id: 9, icon: "power-settings-new" },
+    { id: 9, icon: "translate" },
+    { id: 10, icon: "power-settings-new" },
 ]

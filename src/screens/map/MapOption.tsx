@@ -14,6 +14,7 @@ interface Props {
   onPowerPress: () => void;
   onTablePress: () => void;
   onOptionPress: () => void;
+  onTranslatePress: () => void;
 }
 
 const MapOption: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const MapOption: React.FC<Props> = ({
   onOptionPress,
   onPowerPress,
   onTablePress,
+  onTranslatePress
 }) => {
   const {theme} = useTheme();
 
@@ -38,6 +40,7 @@ const MapOption: React.FC<Props> = ({
     onBackupPress,
     onTablePress,
     onThemePress,
+    onTranslatePress,
     onPowerPress,
   ];
 

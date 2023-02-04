@@ -1,5 +1,3 @@
-// import Config from "react-native-config";
+const LANGUAGE_KEY = 'language'
 
-// export const API_URL = Config.API_URL
-// export const GOOGLE_MAPS_API_KEY = Config.GOOGLE_MAPS_API_KEY
-
+export { LANGUAGE_KEY }

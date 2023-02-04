@@ -10,22 +10,23 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import {getData, saveData} from '../../utils/utils';
 import {useTheme, useTranslate} from '../../hooks';
 
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
+import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
 import {Return} from '../../utils/getBounds';
 import calculateMinimumZoomLevel from '../../utils/calculateMinimumZoomLevel';
 import {collection} from '../../zuztand/store/polygon/selectors';
 import exportGeoJSON from '../../utils/exportGeoJSON';
-import {getData} from '../../utils/utils';
 import i18n from '../../i18n/i18n';
 import mapStyle from '../../config/mapStyle';
 import mapStyleDark from '../../config/mapStyleDark';
 
 const setInitialLanguage = async () => {
-  const savedLanguage = await getData('language');
+  const savedLanguage = await getData(LANGUAGE_KEY);
   i18n.changeLanguage(savedLanguage || 'en');
 };
 
@@ -151,7 +152,7 @@ const Map: React.FC<PropsWithChildren> = () => {
    */
   const onTablePress = useCallback(() => {
     console.log('onTablePress clicked');
-  }, [theme.id]);
+  }, []);
   /**
    * A callback function that is triggered when the option button is pressed.
    *
@@ -159,7 +160,20 @@ const Map: React.FC<PropsWithChildren> = () => {
    */
   const onOptionPress = useCallback(() => {
     console.log('onOptionPress clicked');
-  }, [theme.id]);
+  }, []);
+
+  /**
+   * A callback function that is triggered when the translate button is pressed.
+   *
+   * @returns void
+   */
+  const onTranslatePress = useCallback(async () => {
+    const savedLanguage = await getData(LANGUAGE_KEY);
+    const current = savedLanguage === 'en' ? 'ar' : 'en';
+
+    i18n.changeLanguage(current);
+    await saveData(LANGUAGE_KEY, current);
+  }, []);
 
   /**
    * A callback function that sets the boundaries of the map based on the `boundary` state.
@@ -255,6 +269,7 @@ const Map: React.FC<PropsWithChildren> = () => {
             onPowerPress={onPowerPress}
             onTablePress={onTablePress}
             onOptionPress={onOptionPress}
+            onTranslatePress={onTranslatePress}
           />
         </>
       )}

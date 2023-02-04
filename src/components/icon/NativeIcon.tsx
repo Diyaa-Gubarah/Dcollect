@@ -13,7 +13,7 @@ export type TIcon =
   | 'palette'
   | 'crop-free'
   | 'more-horiz'
-  | 'power-settings-new';
+  | 'power-settings-new'|'translate';
 
 interface Props {
   name: TIcon;
