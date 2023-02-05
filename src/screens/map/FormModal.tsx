@@ -1,34 +1,45 @@
-import {NativeModal, NativeText} from '../../components';
-import React, {useCallback, useRef} from 'react';
+import { NativeText, NativeTouch, NativeView } from '../../components';
+import React, { useCallback } from 'react';
 
-import {ModalRef} from '../../components/modal/NativeModal';
-import {TouchableOpacity} from 'react-native';
+import { ScrollView } from 'react-native';
+import { feature } from '../../zustand/store/polygon/selectors';
+import { useGeoJsonStore } from '../../zustand/store/polygon';
 
-const FormModal = () => {
-  const modalRef = useRef<ModalRef>(null);
+interface IFormModal {
+  onFormCloseButtonPress: () => void;
+  feature?: unknown;
+}
 
-  const handleOpenModal = useCallback(() => {
-    modalRef.current?.open();
-  }, [modalRef]);
+const FormModal: React.FC<IFormModal> = ({onFormCloseButtonPress}) => {
+  const { updateFeatureProperties} = useGeoJsonStore();
+  const selectedFeature = feature();
 
-  const handleCloseModal = useCallback(() => {
-    modalRef.current?.close();
-    console.log('form close modal');
-  }, [modalRef]);
+  const save = useCallback(() => {
+    // update current feature properties
+    updateFeatureProperties(selectedFeature.properties.id, {
+      name: 'My new name',
+    });
+    // updateProperties('name', 'updated name');
+  }, [selectedFeature.properties.id]);
 
   return (
-    <>
-      <NativeModal ref={modalRef} onClose={handleCloseModal}>
+    <NativeView>
+      <ScrollView>
         <NativeText color="primary" size="lg">
-          Modal Form
+          {JSON.stringify(selectedFeature)}
         </NativeText>
-      </NativeModal>
-      <TouchableOpacity onPress={handleOpenModal}>
-        <NativeText color="background" size="lg">
-          Open Modal
-        </NativeText>
-      </TouchableOpacity>
-    </>
+        <NativeTouch onPress={onFormCloseButtonPress}>
+          <NativeText color="primary" size="lg">
+            close
+          </NativeText>
+        </NativeTouch>
+        <NativeTouch onPress={save}>
+          <NativeText color="primary" size="lg">
+            save
+          </NativeText>
+        </NativeTouch>
+      </ScrollView>
+    </NativeView>
   );
 };
 

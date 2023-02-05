@@ -1,4 +1,4 @@
-export default[
+export default [
     {
         "featureType": "all",
         "elementType": "all",
@@ -61,8 +61,8 @@ export default[
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
-            }
+                "visibility": "on"
+            },
         ]
     },
     {

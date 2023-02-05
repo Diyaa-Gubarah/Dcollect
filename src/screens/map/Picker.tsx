@@ -1,10 +1,5 @@
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
-import {
-  NativeIcon,
-  NativeText,
-  NativeTouch,
-  NativeView,
-} from '../../components';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {NativeIcon, NativeText, NativeTouch} from '../../components';
 import React, {useCallback, useState} from 'react';
 import getBounds, {Return} from '../../utils/getBounds';
 import {useTheme, useTranslate} from '../../hooks';
@@ -12,13 +7,12 @@ import {useTheme, useTranslate} from '../../hooks';
 import DocumentPicker from 'react-native-document-picker';
 import {GeoJson} from '../../types/geojon';
 import RNFS from 'react-native-fs';
-import exportGeoJSON from '../../utils/exportGeoJSON';
-import {useGeoJsonStore} from '../../zuztand/store/polygon';
+import {useGeoJsonStore} from '../../zustand/store/polygon';
 
 interface PickerProps {
-  onJsonDataSuccess: (data: GeoJson, boundary: Return) => void;
+  setBoundaryWhenSuccessLoading: (boundary: Return) => void;
 }
-const Picker: React.FC<PickerProps> = ({onJsonDataSuccess}) => {
+const Picker: React.FC<PickerProps> = ({setBoundaryWhenSuccessLoading}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const {setFeatureCollection} = useGeoJsonStore();
 
@@ -34,18 +28,22 @@ const Picker: React.FC<PickerProps> = ({onJsonDataSuccess}) => {
         type: [DocumentPicker.types.allFiles],
       });
 
-      if (result[0].name && result[0].name.endsWith('.geojson')) {
+      if (result[0].name && result[0].name.endsWith('.txt')) {
         const content = await RNFS.readFile(result[0].uri, 'utf8');
         const data = JSON.parse(content);
 
-        handleUpdateFeatureCollection(data);
+        // get field area bounder's
         const boundary = getBounds(data);
-        onJsonDataSuccess?.(data, boundary);
+        // send the calculated boundary back to map component
+        setBoundaryWhenSuccessLoading?.(boundary);
+
+        // save loaded geojson to store
+        handleUpdateFeatureCollection(data);
       } else {
         console.log('Picker No GeoJSON file was picked');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }

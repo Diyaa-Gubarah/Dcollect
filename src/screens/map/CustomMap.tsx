@@ -14,27 +14,34 @@ import {getData, saveData} from '../../utils/utils';
 import {useTheme, useTranslate} from '../../hooks';
 
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
+import FormModal from './FormModal';
 import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
 import {Return} from '../../utils/getBounds';
 import calculateMinimumZoomLevel from '../../utils/calculateMinimumZoomLevel';
-import {collection} from '../../zuztand/store/polygon/selectors';
+import {collection} from '../../zustand/store/polygon/selectors';
 import exportGeoJSON from '../../utils/exportGeoJSON';
 import i18n from '../../i18n/i18n';
 import mapStyle from '../../config/mapStyle';
 import mapStyleDark from '../../config/mapStyleDark';
+import {useGeoJsonStore} from '../../zustand/store/polygon';
 
 const setInitialLanguage = async () => {
   const savedLanguage = await getData(LANGUAGE_KEY);
   i18n.changeLanguage(savedLanguage || 'en');
 };
 
+const returnData = {
+  feature: {},
+};
 const Map: React.FC<PropsWithChildren> = () => {
   const {theme, toggleTheme} = useTheme();
+  const {setFeature} = useGeoJsonStore();
   const t = useTranslate();
   const mapRef = useRef<MapView>(null);
   const modalRef = useRef<ModalRef>(null);
+  const formModalRef = useRef<ModalRef>(null);
 
   // const [json, setJson] = useState<unknown | null>(null);
   const [boundary, setBoundary] = useState<Return | null>(null);
@@ -199,13 +206,12 @@ const Map: React.FC<PropsWithChildren> = () => {
   /**
    * A callback function that is triggered when JSON data is successfully loaded.
    *
-   * @param data - The loaded JSON data.
    * @param boundary - The boundary of the loaded data.
    *
    * @returns void
    */
-  const onJsonDataSuccess = useCallback(
-    (data: GeoJson, boundary: Return) => {
+  const setBoundaryWhenSuccessLoading = useCallback(
+    (boundary: Return) => {
       // Update the state with the loaded JSON data
 
       // Update the state with the boundary of the loaded data
@@ -219,7 +225,22 @@ const Map: React.FC<PropsWithChildren> = () => {
 
   const onRequestClose = useCallback(() => {
     console.log('main onRequestClose');
+    BackHandler.exitApp();
   }, [modalRef]);
+
+  const onFeaturePress = useCallback(
+    (data: Feature | unknown) => {
+      // console.log(`onFeaturePress: ${JSON.stringify(data)}`);
+      formModalRef?.current?.open();
+      setFeature(data);
+    },
+    [formModalRef],
+  );
+
+  const onFormCloseButtonPress = useCallback(() => {
+    // console.log(`onFeaturePress: ${JSON.stringify(data)}`);
+    formModalRef?.current?.close();
+  }, [formModalRef]);
 
   useEffect(() => {
     setInitialLanguage();
@@ -253,8 +274,8 @@ const Map: React.FC<PropsWithChildren> = () => {
               strokeColor={`${theme.colors.primary}`}
               fillColor={`${theme.colors.primary}0D`}
               strokeWidth={theme.spacing.sm * 0.25}
-              onPress={(data: any) => {
-                console.log(JSON.stringify(data));
+              onPress={(data: typeof returnData | any) => {
+                onFeaturePress(data.feature);
               }}
             />
           </MapView>
@@ -274,7 +295,11 @@ const Map: React.FC<PropsWithChildren> = () => {
         </>
       )}
       <NativeModal ref={modalRef} onClose={onRequestClose}>
-        <Picker onJsonDataSuccess={onJsonDataSuccess} />
+        <Picker setBoundaryWhenSuccessLoading={setBoundaryWhenSuccessLoading} />
+      </NativeModal>
+
+      <NativeModal ref={formModalRef} onClose={onRequestClose}>
+        <FormModal onFormCloseButtonPress={onFormCloseButtonPress} />
       </NativeModal>
     </View>
   );

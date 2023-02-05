@@ -9,7 +9,7 @@ interface Geometry {
 
 export interface Feature {
     type: "Feature";
-    properties: Properties;
+    properties: {id:number,} & Properties;
     geometry: Geometry;
 }
 
