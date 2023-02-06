@@ -57,6 +57,14 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>react-native-maps custom message</string>
 
+	<key>UIFileSharingEnabled</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UISupportsDocumentBrowser</key>
+    <true/>
+
+
 
 
 
