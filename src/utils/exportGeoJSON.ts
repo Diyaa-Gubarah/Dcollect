@@ -1,36 +1,18 @@
-import * as RNFS from 'react-native-fs';
-
-import { Alert, PermissionsAndroid } from 'react-native'
+import * as ScopedStorage from "react-native-scoped-storage";
 
 import { GeoJson } from '../types/geojon';
 
-const folderPath = RNFS.DocumentDirectoryPath + "/appdata";
-
-const makeDirectory = async (folderPath: string) => {
-    await RNFS.mkdir(folderPath); //create a new folder on folderPath
-
-};
-
-
-const exportGeoJSON = (geojson: GeoJson) => {
-    var path = RNFS.DocumentDirectoryPath + '/test.txt';
-
-    // write the file
-    RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
-        .then((success) => {
-            console.log('FILE WRITTEN! ', JSON.stringify(success));
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
-
-
+const exportGeoJSON = async (geojson: GeoJson) => {
+    try {
+        let dir = await ScopedStorage.openDocumentTree(true);
+        await ScopedStorage.writeFile(dir.uri, JSON.stringify(geojson), `${Date.now()}.geojson`, "utf8");
+    } catch (e) {
+        console.log(`Save e: ${JSON.stringify(e)}`)
+    }
 
 };
-
 
 // const exportGeoJSON = async (geojson: GeoJson) => {
-//     makeDirectory(folderPath)
 
 //     try {
 //         const granted = await PermissionsAndroid.request(
