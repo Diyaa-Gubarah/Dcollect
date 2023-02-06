@@ -29,9 +29,7 @@ const useGeoJsonStore = create<State>((set, get) => ({
             return feature;
         });
 
-        console.log('store: ', JSON.stringify({ ...state.featureCollection, features: updatedFeatures }))
-
-        exportGeoJSON({ ...state.featureCollection, features: updatedFeatures });
+        // exportGeoJSON({ ...state.featureCollection, features: updatedFeatures });
 
         return { ...state, featureCollection: { ...state.featureCollection, features: updatedFeatures } };
     }),
