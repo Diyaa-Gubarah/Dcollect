@@ -34,8 +34,6 @@ const Form: React.FC<IForm> = ({onFormCloseButtonPress}) => {
     initialValues(selectedFeature),
   );
 
-  console.log(values);
-
   const handleChange = (property: string) => (text: unknown) => {
     dispatch({type: 'UPDATE_PROPERTY', property, value: text});
   };
@@ -57,12 +55,13 @@ const Form: React.FC<IForm> = ({onFormCloseButtonPress}) => {
       }}
       contentContainerStyle={{
         width: '100%',
-      }}
-      StickyHeaderComponent={() => (
-        <NativeText color="primary" size="sm">
-          kjhkhkj
-        </NativeText>
-      )}>
+      }}>
+      <NativeText
+        color="primary"
+        size="md"
+        style={{textAlign: 'center', marginVertical: theme.spacing.md}}>
+        {selectedFeature.properties.id}
+      </NativeText>
       {Object.keys(selectedFeature.properties)
         .filter(p => p !== 'id')
         .map(property => {
