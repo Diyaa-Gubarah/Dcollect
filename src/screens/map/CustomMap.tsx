@@ -15,6 +15,7 @@ import {useTheme, useTranslate} from '../../hooks';
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
 import {Feature} from '../../types/geojon';
 import Form from './Form';
+import GridTable from './Table';
 import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
@@ -41,6 +42,7 @@ const Map: React.FC<PropsWithChildren> = () => {
   const t = useTranslate();
   const mapRef = useRef<MapView>(null);
   const modalRef = useRef<ModalRef>(null);
+  const tableModalRef = useRef<ModalRef>(null);
   const formModalRef = useRef<ModalRef>(null);
 
   // const [json, setJson] = useState<unknown | null>(null);
@@ -158,7 +160,9 @@ const Map: React.FC<PropsWithChildren> = () => {
    * @returns void
    */
   const onTablePress = useCallback(() => {
-    console.log('onTablePress clicked');
+    console.log(`onTablePress: `);
+
+    tableModalRef.current?.open();
   }, []);
   /**
    * A callback function that is triggered when the option button is pressed.
@@ -223,12 +227,16 @@ const Map: React.FC<PropsWithChildren> = () => {
     [modalRef, boundary],
   );
 
-  const onRequestClose = useCallback(() => {
+  const onTableRequestClose = useCallback(() => {
+    tableModalRef.current?.close();
+  }, [tableModalRef]);
+
+
+  const onFormRequestClose = useCallback(() => {
     formModalRef.current?.close();
   }, [formModalRef]);
 
   const onMainRequestClose = useCallback(() => {
-    console.log('main onRequestClose');
     BackHandler.exitApp();
   }, [modalRef]);
 
@@ -302,8 +310,12 @@ const Map: React.FC<PropsWithChildren> = () => {
         <Picker setBoundaryWhenSuccessLoading={setBoundaryWhenSuccessLoading} />
       </NativeModal>
 
-      <NativeModal ref={formModalRef} onClose={onRequestClose}>
+      <NativeModal ref={formModalRef} onClose={onFormRequestClose}>
         <Form onFormCloseButtonPress={onFormCloseButtonPress} />
+      </NativeModal>
+
+      <NativeModal ref={tableModalRef} onClose={onTableRequestClose}>
+        <GridTable />
       </NativeModal>
     </View>
   );
