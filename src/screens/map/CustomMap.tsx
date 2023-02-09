@@ -1,5 +1,4 @@
 import {BackHandler, StyleSheet, View} from 'react-native';
-import {Feature, GeoJson} from '../../types/geojon';
 import MapView, {Camera, Geojson, Region} from 'react-native-maps';
 import NativeModal, {ModalRef} from '../../components/modal/NativeModal';
 import React, {
@@ -14,7 +13,8 @@ import {getData, saveData} from '../../utils/utils';
 import {useTheme, useTranslate} from '../../hooks';
 
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
-import FormModal from './FormModal';
+import {Feature} from '../../types/geojon';
+import Form from './Form';
 import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
@@ -148,7 +148,7 @@ const Map: React.FC<PropsWithChildren> = () => {
    * @returns void
    */
   const onPowerPress = useCallback(() => {
-    exportGeoJSON(GEOJSON);
+    // exportGeoJSON(GEOJSON);
     BackHandler.exitApp();
   }, [GEOJSON]);
 
@@ -224,6 +224,10 @@ const Map: React.FC<PropsWithChildren> = () => {
   );
 
   const onRequestClose = useCallback(() => {
+    formModalRef.current?.close();
+  }, [formModalRef]);
+
+  const onMainRequestClose = useCallback(() => {
     console.log('main onRequestClose');
     BackHandler.exitApp();
   }, [modalRef]);
@@ -271,8 +275,8 @@ const Map: React.FC<PropsWithChildren> = () => {
             <Geojson
               tappable
               geojson={GEOJSON}
-              strokeColor={`${theme.colors.primary}`}
-              fillColor={`${theme.colors.primary}0D`}
+              strokeColor={`${theme.colors.primary}4D`}
+              fillColor={`${theme.colors.primary}1A`}
               strokeWidth={theme.spacing.sm * 0.25}
               onPress={(data: typeof returnData | any) => {
                 onFeaturePress(data.feature);
@@ -294,12 +298,12 @@ const Map: React.FC<PropsWithChildren> = () => {
           />
         </>
       )}
-      <NativeModal ref={modalRef} onClose={onRequestClose}>
+      <NativeModal ref={modalRef} onClose={onMainRequestClose}>
         <Picker setBoundaryWhenSuccessLoading={setBoundaryWhenSuccessLoading} />
       </NativeModal>
 
       <NativeModal ref={formModalRef} onClose={onRequestClose}>
-        <FormModal onFormCloseButtonPress={onFormCloseButtonPress} />
+        <Form onFormCloseButtonPress={onFormCloseButtonPress} />
       </NativeModal>
     </View>
   );

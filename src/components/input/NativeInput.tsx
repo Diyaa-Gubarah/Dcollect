@@ -1,10 +1,18 @@
-import { ColorValues, SpaceValues } from "../../types/theme";
-import { TextInput, TextInputProps } from "react-native";
+import {ColorValues, SpaceValues} from '../../types/theme';
+import {TextInput, TextInputProps} from 'react-native';
 
-import React from "react";
-import { useTheme } from "../../hooks";
+import {DEFAULT_DARK_THEME_ID} from '../../constants/themes';
+import React from 'react';
+import {useTheme} from '../../hooks';
 
-type KeyboardType = "default" | "numeric" | "email-address" | "phone-pad";
+export type KeyboardType =
+  | 'default'
+  | 'numeric'
+  | 'email-address'
+  | 'phone-pad'
+  | 'number-pad';
+
+export type InputType = 'text' | 'numeric';
 
 interface INativeInputProps {
   fontSize?: SpaceValues;
@@ -12,7 +20,10 @@ interface INativeInputProps {
   onChangeText: (text: string) => void;
   placeholder?: string;
   style?: any;
-  KeyboardType: KeyboardType;
+  KeyboardType?: KeyboardType;
+  inputMode?: InputType;
+  value?: string;
+  defaultValue?: string;
 }
 
 const NativeInput: React.FC<INativeInputProps> = ({
@@ -22,18 +33,21 @@ const NativeInput: React.FC<INativeInputProps> = ({
   style,
   ...props
 }) => {
-  const { theme } = useTheme();
+  const {theme} = useTheme();
   return (
     <TextInput
       {...props}
+      onChangeText={onChangeText}
+      textAlign="center"
+      keyboardAppearance={theme.id === DEFAULT_DARK_THEME_ID ? 'dark' : 'light'}
+      placeholderTextColor={theme.colors.textSecondary}
       style={[
         {
-          fontSize: theme.fontSizes[fontSize ?? "lg"],
-          color: theme.colors[color ?? "textPrimary"],
+          fontSize: theme.fontSizes[fontSize ?? 'md'],
+          color: theme.colors[color ?? 'textPrimary'],
         },
         style,
       ]}
-      onChangeText={onChangeText}
     />
   );
 };
