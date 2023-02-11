@@ -10,7 +10,7 @@ export const DEFAULT_DARK_THEME_ID = "default-dark";
 export const DEFAULT_LIGHT_COLOR_THEME = {
     textPrimary: '#24292e',
     textSecondary: '#586069',
-    primary: '#48cae4',
+    primary: '#46B5D1',
     background: '#fff',
 }
 
@@ -18,8 +18,8 @@ export const DEFAULT_LIGHT_COLOR_THEME = {
 export const DEFAULT_DARK_COLOR_THEME = {
     textPrimary: '#fff',
     textSecondary: '#d3d3d3',
-    primary: '#48cae4',
-    background: '#22223b',
+    primary: '#46B5D1',
+    background: '#001F3F',
 }
 
 

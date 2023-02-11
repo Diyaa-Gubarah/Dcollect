@@ -57,7 +57,6 @@ const NativeList = <T extends {}>({
       maxToRenderPerBatch={maxToRenderPerBatch}
       windowSize={windowSize}
       style={{backgroundColor: theme.colors.background}}
-      contentContainerStyle={{backgroundColor: theme.colors.background}}
       {...rest}
     />
   );

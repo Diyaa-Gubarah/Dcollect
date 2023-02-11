@@ -1,5 +1,5 @@
 import {BackHandler, StyleSheet, View} from 'react-native';
-import MapView, {Camera, Geojson, Region} from 'react-native-maps';
+import MapView, {Camera, Geojson, LatLng, Region} from 'react-native-maps';
 import NativeModal, {ModalRef} from '../../components/modal/NativeModal';
 import React, {
   PropsWithChildren,
@@ -15,17 +15,18 @@ import {useTheme, useTranslate} from '../../hooks';
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
 import {Feature} from '../../types/geojon';
 import Form from './Form';
-import GridTable from './Table';
 import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
 import {Return} from '../../utils/getBounds';
+import TableExample from './GridTable';
 import calculateMinimumZoomLevel from '../../utils/calculateMinimumZoomLevel';
 import {collection} from '../../zustand/store/polygon/selectors';
 import exportGeoJSON from '../../utils/exportGeoJSON';
 import i18n from '../../i18n/i18n';
 import mapStyle from '../../config/mapStyle';
 import mapStyleDark from '../../config/mapStyleDark';
+import {scale} from '../../utils/responsive';
 import {useGeoJsonStore} from '../../zustand/store/polygon';
 
 const setInitialLanguage = async () => {
@@ -117,6 +118,7 @@ const Map: React.FC<PropsWithChildren> = () => {
   const onThemePress = useCallback(() => {
     toggleTheme();
   }, [theme.id]);
+
   /**
    * A callback function that is triggered when the fit button is pressed.
    *
@@ -135,6 +137,30 @@ const Map: React.FC<PropsWithChildren> = () => {
       });
     }
   }, [mapRef, boundary]);
+
+  /**
+   * A callback function that is triggered when the fit button is pressed.
+   *
+   * @returns void
+   */
+  const onRowClicked = useCallback(
+    (coordinates: LatLng[]) => {
+      if (coordinates) {
+        mapRef?.current?.fitToCoordinates(coordinates, {
+          animated: true,
+          edgePadding: {
+            top: scale(20),
+            right: scale(20),
+            bottom: scale(20),
+            left: scale(20),
+          },
+        });
+        tableModalRef.current?.close();
+      }
+    },
+    [tableModalRef, mapRef],
+  );
+
   /**
    * A callback function that is triggered when the backup button is pressed.
    *
@@ -160,8 +186,6 @@ const Map: React.FC<PropsWithChildren> = () => {
    * @returns void
    */
   const onTablePress = useCallback(() => {
-    console.log(`onTablePress: `);
-
     tableModalRef.current?.open();
   }, []);
   /**
@@ -231,7 +255,6 @@ const Map: React.FC<PropsWithChildren> = () => {
     tableModalRef.current?.close();
   }, [tableModalRef]);
 
-
   const onFormRequestClose = useCallback(() => {
     formModalRef.current?.close();
   }, [formModalRef]);
@@ -250,7 +273,6 @@ const Map: React.FC<PropsWithChildren> = () => {
   );
 
   const onFormCloseButtonPress = useCallback(() => {
-    // console.log(`onFeaturePress: ${JSON.stringify(data)}`);
     formModalRef?.current?.close();
   }, [formModalRef]);
 
@@ -284,7 +306,7 @@ const Map: React.FC<PropsWithChildren> = () => {
               tappable
               geojson={GEOJSON}
               strokeColor={`${theme.colors.primary}4D`}
-              fillColor={`${theme.colors.primary}1A`}
+              fillColor={`${theme.colors.primary}33`}
               strokeWidth={theme.spacing.sm * 0.25}
               onPress={(data: typeof returnData | any) => {
                 onFeaturePress(data.feature);
@@ -315,7 +337,7 @@ const Map: React.FC<PropsWithChildren> = () => {
       </NativeModal>
 
       <NativeModal ref={tableModalRef} onClose={onTableRequestClose}>
-        <GridTable />
+        <TableExample onRowClicked={onRowClicked} />
       </NativeModal>
     </View>
   );

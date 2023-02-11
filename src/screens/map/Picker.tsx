@@ -28,7 +28,7 @@ const Picker: React.FC<PickerProps> = ({setBoundaryWhenSuccessLoading}) => {
         type: [DocumentPicker.types.allFiles],
       });
 
-      if (result[0].name && result[0].name.endsWith('.geojson')) {
+      if (result[0].name && result[0].name.endsWith('.txt')) {
         const content = await RNFS.readFile(result[0].uri, 'utf8');
         const data = JSON.parse(content);
 
