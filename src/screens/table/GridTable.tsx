@@ -1,30 +1,61 @@
 import {
   ActivityIndicator,
-  FlatList,
   ScrollView,
   StyleProp,
-  TouchableOpacity,
-  View,
+  StyleSheet,
+  View
 } from 'react-native';
-import {NativeList, NativeTouch} from '../../components';
+import {
+  NativeList,
+  NativeText,
+  NativeTouch,
+  NativeView
+} from '../../components';
 import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
   useMemo,
   useRef,
-  useState,
+  useState
 } from 'react';
-import {Row, TableWrapper} from 'react-native-table-component';
+import { Row, TableWrapper } from 'react-native-table-component';
+import { useTheme, useTranslate } from '../../hooks';
 
-import {Feature} from '../../types/geojon';
-import {LatLng} from 'react-native-maps';
-import {collection} from '../../zustand/store/polygon/selectors';
-import {useTheme} from '../../hooks';
+import { Feature } from '../../types/geojon';
+import { LatLng } from 'react-native-maps';
+import { collection } from '../../zustand/store/polygon/selectors';
 
 type ITable = {
   onRowClicked: (coordinates: LatLng[]) => void;
 } & PropsWithChildren;
+
+const ListFooterComponent = ({
+  onPress,
+  loading,
+}: {
+  onPress: () => void;
+  loading: boolean;
+}) => {
+  const {theme} = useTheme();
+  const t = useTranslate();
+  return (
+    <NativeTouch onPress={onPress}>
+      <NativeView
+        padding="xsm"
+        align="center"
+        style={{backgroundColor: theme.colors.primary}}>
+        {loading ? (
+          <ActivityIndicator color={theme.colors.textPrimary} size={'small'} />
+        ) : (
+          <NativeText color="textPrimary" size="xsm">
+            {t('LOAD_MORE')}
+          </NativeText>
+        )}
+      </NativeView>
+    </NativeTouch>
+  );
+};
 
 const GridTable: React.FC<ITable> = ({onRowClicked}) => {
   const {theme} = useTheme();
@@ -34,16 +65,6 @@ const GridTable: React.FC<ITable> = ({onRowClicked}) => {
   let timerRef = useRef<number>(0);
 
   const GEOJSON = collection();
-
-  const handleEndReached = useCallback(() => {
-    setLoading(true);
-    clearTimeout(timerRef.current);
-
-    timerRef.current = setTimeout(() => {
-      setRowsToDisplay(prevRowsToDisplay => prevRowsToDisplay + 10);
-      setLoading(false);
-    }, 1500);
-  }, [rowsToDisplay, loading, timerRef.current]);
 
   const displayedRows = useMemo(
     () => GEOJSON.features.slice(0, rowsToDisplay),
@@ -119,15 +140,25 @@ const GridTable: React.FC<ITable> = ({onRowClicked}) => {
     [handleRowPress, displayedRows.length, text],
   );
 
-  const listFooterComponent = useCallback(() => {
-    return (
-      <ActivityIndicator
-        size="large"
-        color={theme.colors.primary}
-        style={{marginTop: theme.spacing.lg}}
-      />
-    );
-  }, []);
+  const handleEndReached = useCallback(() => {
+    setLoading(true);
+    clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      setRowsToDisplay(prevRowsToDisplay => prevRowsToDisplay + 10);
+      setLoading(false);
+    }, 1500);
+  }, [rowsToDisplay, loading, timerRef.current]);
+
+  // const listFooterComponent = useCallback(() => {
+  //   return (
+  //     <ActivityIndicator
+  //       size="large"
+  //       color={theme.colors.primary}
+  //       style={{marginTop: theme.spacing.lg}}
+  //     />
+  //   );
+  // }, []);
 
   const keyExtractor = useCallback(
     (item: Feature, index: number) => `${item.properties.id}${index}`,
@@ -152,14 +183,21 @@ const GridTable: React.FC<ITable> = ({onRowClicked}) => {
             data={displayedRows}
             renderItem={ClickableRow}
             keyExtractor={keyExtractor}
-            onEndReached={handleEndReached}
-            onEndReachedThreshold={1}
-            ListFooterComponent={loading ? listFooterComponent : null}
+            ListFooterComponent={() => (
+              <ListFooterComponent
+                onPress={handleEndReached}
+                loading={loading}
+              />
+            )}
           />
         </TableWrapper>
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  loadMore: {alignSelf: 'center'},
+});
 
 export default GridTable;

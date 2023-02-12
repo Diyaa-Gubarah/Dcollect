@@ -14,12 +14,12 @@ import {useTheme, useTranslate} from '../../hooks';
 
 import {DEFAULT_LIGHT_THEME_ID} from '../../constants/themes';
 import {Feature} from '../../types/geojon';
-import Form from './Form';
+import Form from '../form/Form';
 import {LANGUAGE_KEY} from '../../constants/variable';
 import MapOption from './MapOption';
 import Picker from './Picker';
 import {Return} from '../../utils/getBounds';
-import TableExample from './GridTable';
+import TableExample from '../table/GridTable';
 import calculateMinimumZoomLevel from '../../utils/calculateMinimumZoomLevel';
 import {collection} from '../../zustand/store/polygon/selectors';
 import exportGeoJSON from '../../utils/exportGeoJSON';

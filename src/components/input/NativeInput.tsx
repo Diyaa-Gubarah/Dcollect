@@ -40,7 +40,7 @@ const NativeInput: React.FC<INativeInputProps> = ({
       onChangeText={onChangeText}
       textAlign="center"
       keyboardAppearance={theme.id === DEFAULT_DARK_THEME_ID ? 'dark' : 'light'}
-      placeholderTextColor={theme.colors.textSecondary}
+      placeholderTextColor={theme.colors.textPrimary}
       style={[
         {
           fontSize: theme.fontSizes[fontSize ?? 'md'],
