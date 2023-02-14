@@ -33,8 +33,8 @@ const NativeTouch = ({
 
   const touchableStyle = {
     backgroundColor: theme.colors[background],
-    ...(padding &&{padding: theme.spacing[padding]}),
-    ...(rounded&&{borderRadius: theme.spacing[rounded]}),
+    ...(padding && {padding: theme.spacing[padding]}),
+    ...(rounded && {borderRadius: theme.spacing[rounded]}),
   };
 
   if (Platform.OS === 'ios') {
@@ -48,7 +48,7 @@ const NativeTouch = ({
       <TouchableNativeFeedback
         onPress={handlePress}
         style={[touchableStyle, rest]}>
-        <View style={touchableStyle}>{children}</View>
+        <View style={[touchableStyle, rest]}>{children}</View>
       </TouchableNativeFeedback>
     );
   }

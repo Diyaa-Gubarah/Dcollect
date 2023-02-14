@@ -1,5 +1,6 @@
 import {NativeIcon, NativeList, NativeTouch} from '../../components';
 import {StyleSheet, View} from 'react-native';
+import {useCallback, useMemo} from 'react';
 
 import {Option} from '../../data/option';
 import {useTheme} from '../../hooks';
@@ -31,18 +32,45 @@ const MapOption: React.FC<Props> = ({
 }) => {
   const {theme} = useTheme();
 
-  const fun = [
-    onOptionPress,
-    onTypePress,
-    onZoomInPress,
-    onZoomOutPress,
-    onFitPress,
-    onBackupPress,
-    onTablePress,
-    onThemePress,
-    onTranslatePress,
-    onPowerPress,
-  ];
+  const fun = useMemo(
+    () => [
+      onOptionPress,
+      onTypePress,
+      onZoomInPress,
+      onZoomOutPress,
+      onFitPress,
+      onBackupPress,
+      onTablePress,
+      onThemePress,
+      onTranslatePress,
+      onPowerPress,
+    ],
+    [
+      onOptionPress,
+      onTypePress,
+      onZoomInPress,
+      onZoomOutPress,
+      onFitPress,
+      onBackupPress,
+      onTablePress,
+      onThemePress,
+      onTranslatePress,
+      onPowerPress,
+    ],
+  );
+
+  const renderItem = useCallback(
+    (data: (typeof Option)[0]) => (
+      <NativeTouch
+        onPress={fun[data.id - 1]}
+        padding="xsm"
+        background="primary"
+        rounded="xsm">
+        <NativeIcon color="background" name={data.icon} size={8} />
+      </NativeTouch>
+    ),
+    [Option.length],
+  );
 
   return (
     <View
@@ -56,18 +84,9 @@ const MapOption: React.FC<Props> = ({
       <NativeList
         data={Option}
         // sepGap="md"
-
         direction="vertical"
         keyExtractor={data => data.id.toString()}
-        renderItem={data => (
-          <NativeTouch
-            onPress={fun[data.id - 1]}
-            padding="xsm"
-            background="primary"
-            rounded="xsm">
-            <NativeIcon color="background" name={data.icon} size={8} />
-          </NativeTouch>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );

@@ -2,7 +2,6 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleProp,
-  StyleSheet,
   View
 } from 'react-native';
 import {
@@ -196,8 +195,5 @@ const GridTable: React.FC<ITable> = ({onRowClicked}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  loadMore: {alignSelf: 'center'},
-});
 
 export default GridTable;

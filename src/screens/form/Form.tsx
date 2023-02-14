@@ -1,12 +1,21 @@
 import NativeInput, {KeyboardType} from '../../components/input/NativeInput';
 import {NativeText, NativeTouch, NativeView} from '../../components';
-import React, {useCallback, useReducer} from 'react';
+import React, {useCallback, useReducer, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {initialValues, reducer} from './FormReducer';
 
+import Dropdown from '../../components/dropdown/DropDown';
 import {feature} from '../../zustand/store/polygon/selectors';
 import {useGeoJsonStore} from '../../zustand/store/polygon';
 import {useTheme} from '../../hooks';
+
+const data = [
+  {label: 'One', value: '1'},
+  {label: 'Two', value: '2'},
+  {label: 'Three', value: '3'},
+  {label: 'Four', value: '4'},
+  {label: 'Five', value: '5'},
+];
 
 const determineKeyboardType = (propertyValue: unknown): KeyboardType => {
   switch (typeof propertyValue) {
@@ -66,10 +75,13 @@ const Form: React.FC<IForm> = ({onFormCloseButtonPress}) => {
         .filter(p => p !== 'id')
         .map(property => {
           const propertyValue = selectedFeature.properties[property];
+          const propertyKey =
+            property.charAt(0).toLocaleUpperCase() + property.slice(1);
           const keyboardType = determineKeyboardType(propertyValue);
 
           return (
-            <View key={property}>
+            <View key={property} style={{marginVertical:theme.spacing.sm}}>
+              <Dropdown label={propertyKey} data={data} />
               <NativeInput
                 fontSize="xsm"
                 color="textPrimary"
@@ -77,9 +89,7 @@ const Form: React.FC<IForm> = ({onFormCloseButtonPress}) => {
                 inputMode={keyboardType === 'default' ? 'text' : 'numeric'}
                 onChangeText={handleChange(property)}
                 defaultValue={`${propertyValue}`}
-                placeholder={`Feature ${
-                  property.charAt(0).toLocaleUpperCase() + property.slice(1)
-                }`}
+                placeholder={`Feature ${propertyKey}`}
                 style={{
                   borderColor: theme.colors.primary,
                   borderWidth: theme.spacing.xsm / 2,
