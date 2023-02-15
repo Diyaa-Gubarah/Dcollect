@@ -1,11 +1,10 @@
-import {Pressable, StyleSheet, View} from 'react-native';
-import React, {FC, ReactElement, useCallback, useState} from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import React, { FC, useCallback, useState } from 'react';
 
 import NativeIcon from '../icon/NativeIcon';
 import NativeText from '../text/NativeText';
 import NativeTouch from '../touch/NativeTouch';
-import NativeView from '../view/NativeView';
-import {useTheme} from '../../hooks';
+import { useTheme } from '../../hooks';
 
 interface Props {
   label: string;
@@ -42,7 +41,7 @@ const DropList: FC<ListProps> = ({
 const Dropdown: FC<Props> = ({label = 'key_name', data}) => {
   const {theme} = useTheme();
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState<string|null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
 
   const toggleDropdown = useCallback(() => {
     setVisible(!visible);
@@ -70,7 +69,7 @@ const Dropdown: FC<Props> = ({label = 'key_name', data}) => {
             margin: theme.spacing.xsm,
           }}>
           <NativeText color="primary" size="xsm">
-            {`${label} ( ${selected||'Not Selected'} )`}
+            {`${label} ( ${selected || 'Not Selected'} )`}
           </NativeText>
           <NativeIcon
             name={visible ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
