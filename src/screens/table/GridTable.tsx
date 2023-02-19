@@ -1,14 +1,9 @@
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleProp,
-  View
-} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleProp, View} from 'react-native';
 import {
   NativeList,
   NativeText,
   NativeTouch,
-  NativeView
+  NativeView,
 } from '../../components';
 import React, {
   PropsWithChildren,
@@ -16,14 +11,14 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
-import { Row, TableWrapper } from 'react-native-table-component';
-import { useTheme, useTranslate } from '../../hooks';
+import {Row, TableWrapper} from 'react-native-table-component';
+import {useTheme, useTranslate} from '../../hooks';
 
-import { Feature } from '../../types/geojon';
-import { LatLng } from 'react-native-maps';
-import { collection } from '../../zustand/store/polygon/selectors';
+import {Feature} from '../../types/geojon';
+import {LatLng} from 'react-native-maps';
+import {collection} from '../../zustand/store/polygon/selectors';
 
 type ITable = {
   onRowClicked: (coordinates: LatLng[]) => void;
@@ -182,18 +177,19 @@ const GridTable: React.FC<ITable> = ({onRowClicked}) => {
             data={displayedRows}
             renderItem={ClickableRow}
             keyExtractor={keyExtractor}
-            ListFooterComponent={() => (
-              <ListFooterComponent
-                onPress={handleEndReached}
-                loading={loading}
-              />
-            )}
+            ListFooterComponent={() =>
+              GEOJSON.features.length > 20 && (
+                <ListFooterComponent
+                  onPress={handleEndReached}
+                  loading={loading}
+                />
+              )
+            }
           />
         </TableWrapper>
       </ScrollView>
     </View>
   );
 };
-
 
 export default GridTable;

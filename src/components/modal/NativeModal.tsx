@@ -29,6 +29,7 @@ const NativeModal = forwardRef((props: Props, ref) => {
 
   return (
     <Modal
+      statusBarTranslucent
       transparent={true}
       visible={modalVisible}
       onRequestClose={onClose}

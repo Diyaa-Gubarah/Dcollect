@@ -1,5 +1,12 @@
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {NativeIcon, NativeText, NativeTouch} from '../../components';
+import {ActivityIndicator, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  BackgroundImage,
+  NativeIcon,
+  NativeImage,
+  NativeText,
+  NativeTouch,
+  NativeView,
+} from '../../components';
 import React, {useCallback, useState} from 'react';
 import getBounds, {Return} from '../../utils/getBounds';
 import {useTheme, useTranslate} from '../../hooks';
@@ -62,39 +69,59 @@ const PickerButton: React.FC<PickerButtonProps> = ({onPress, loading}) => {
   const {theme} = useTheme();
 
   return (
-    <View
-      style={[
-        styles.buttonContainer,
-        {backgroundColor: theme.colors.background},
-      ]}>
-      {loading ? (
-        <ActivityIndicator
-          color={theme.colors.primary}
-          size="large"
-          style={styles.buttonContainer}
-        />
-      ) : (
-        <NativeTouch
-          padding="xsm"
-          rounded="xsm"
-          onPress={onPress}
-          background="primary"
-          style={{flexDirection: 'row'}}>
-          <View style={styles.innerButton}>
-            <NativeIcon color="background" name={'file-present'} size={10} />
-            <View
+      <BackgroundImage>
+        <NativeView
+          flex={false}
+          style={{
+            ...styles.container,
+            margin: theme.spacing.lg,
+            padding: theme.spacing.lg,
+            borderRadius: theme.spacing.sm,
+          }}>
+          <View
+            style={{
+              ...styles.uploadContainer,
+              borderRadius: theme.spacing.sm,
+              borderWidth: theme.spacing.xsm * 0.25,
+              borderStyle: 'dashed',
+              borderColor: theme.colors.primary,
+              padding: theme.spacing.md,
+            }}>
+            <NativeImage
+              source={require('../../assests/images/upload.png')}
+              resizeMode="contain"
               style={{
-                margin: theme.spacing.sm * 0.5,
+                width: '60%',
+                height: '60%',
               }}
             />
-
-            <NativeText color="background" size="sm">
-              {t('IMPORT')}
+            <View style={{marginVertical: theme.spacing.md}}>
+              {loading ? (
+                <ActivityIndicator
+                  color={theme.colors.primary}
+                  size="large"
+                />
+              ) : (
+                <NativeTouch
+                  padding="xsm"
+                  rounded="xsm"
+                  onPress={onPress}
+                  background="primary"
+                  style={{flexDirection: 'row'}}>
+                  <View style={styles.innerButton}>
+                    <NativeText color="background" size="xsm">
+                      {t('IMPORT')}
+                    </NativeText>
+                  </View>
+                </NativeTouch>
+              )}
+            </View>
+            <NativeText color="primary" size="xsm">
+              Only file's with extension .geojson are allowed.
             </NativeText>
           </View>
-        </NativeTouch>
-      )}
-    </View>
+        </NativeView>
+      </BackgroundImage>
   );
 };
 
@@ -108,6 +135,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  container: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  uploadContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '90%',
   },
 });
 export default Picker;
