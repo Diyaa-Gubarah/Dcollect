@@ -11,7 +11,7 @@ const BackgroundImage = ({children}: Props) => {
     <>
       <ImageBackground
         style={styles.backgroundImage}
-        source={require('../../assests/images/bg.jpg')}
+        source={require('../../assests/images/bg_1.png')}
         resizeMode="cover">
         {children}
       </ImageBackground>
@@ -22,7 +22,7 @@ const BackgroundImage = ({children}: Props) => {
 const styles = StyleSheet.create({
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent:"center"
+    justifyContent:"center",
   },
 });
 

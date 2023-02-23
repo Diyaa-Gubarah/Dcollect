@@ -12,15 +12,17 @@ export const DEFAULT_LIGHT_COLOR_THEME = {
     textSecondary: '#586069',
     primary: '#009688',
     background: '#fff',
-  };
-  
-  export const DEFAULT_DARK_COLOR_THEME = {
+    transparent: "#fff2"
+};
+
+export const DEFAULT_DARK_COLOR_THEME = {
     textPrimary: '#fff',
     textSecondary: '#8b949e',
     primary: '#009688',
     background: '#24292e',
-  };
-        
+    transparent: "#0002"
+};
+
 
 
 const base: Omit<ITheme, 'colors' | 'id'> = {

@@ -69,59 +69,74 @@ const PickerButton: React.FC<PickerButtonProps> = ({onPress, loading}) => {
   const {theme} = useTheme();
 
   return (
-      <BackgroundImage>
-        <NativeView
-          flex={false}
+    <BackgroundImage>
+      <NativeView
+        flex={false}
+        style={{
+          ...styles.container,
+          margin: theme.spacing.lg,
+          padding: theme.spacing.lg,
+          borderRadius: theme.spacing.sm,
+          backgroundColor: `#0004`,
+        }}>
+        <View
           style={{
-            ...styles.container,
-            margin: theme.spacing.lg,
-            padding: theme.spacing.lg,
+            ...styles.uploadContainer,
             borderRadius: theme.spacing.sm,
+            borderWidth: theme.spacing.xsm * 0.25,
+            borderStyle: 'dashed',
+            borderColor: `#fff`,
+            padding: theme.spacing.md,
           }}>
-          <View
+          <NativeImage
+            source={require('../../assests/images/upload.png')}
+            resizeMode="contain"
             style={{
-              ...styles.uploadContainer,
-              borderRadius: theme.spacing.sm,
-              borderWidth: theme.spacing.xsm * 0.25,
-              borderStyle: 'dashed',
-              borderColor: theme.colors.primary,
-              padding: theme.spacing.md,
-            }}>
-            <NativeImage
-              source={require('../../assests/images/upload.png')}
-              resizeMode="contain"
-              style={{
-                width: '60%',
-                height: '60%',
-              }}
-            />
-            <View style={{marginVertical: theme.spacing.md}}>
-              {loading ? (
-                <ActivityIndicator
-                  color={theme.colors.primary}
-                  size="large"
-                />
-              ) : (
-                <NativeTouch
-                  padding="xsm"
-                  rounded="xsm"
-                  onPress={onPress}
-                  background="primary"
-                  style={{flexDirection: 'row'}}>
-                  <View style={styles.innerButton}>
-                    <NativeText color="background" size="xsm">
-                      {t('IMPORT')}
-                    </NativeText>
-                  </View>
-                </NativeTouch>
-              )}
-            </View>
-            <NativeText color="primary" size="xsm">
-              Only file's with extension .geojson are allowed.
-            </NativeText>
+              width: '50%',
+              height: '50%',
+            }}
+          />
+          <View style={{marginVertical: theme.spacing.md}}>
+            {loading ? (
+              <ActivityIndicator color={theme.colors.background} size="large" />
+            ) : (
+              <NativeTouch
+                padding="xsm"
+                rounded="xsm"
+                onPress={onPress}
+                background="transparent"
+                style={{flexDirection: 'row', backgroundColor: `#0002`}}>
+                <View
+                  style={{
+                    ...styles.innerButton,
+                  }}>
+                  <NativeText
+                    color="textPrimary"
+                    size="xsm"
+                    style={{
+                      textAlign: 'center',
+                      fontSize: theme.fontSizes.xsm,
+                      color: `#fff`,
+                    }}>
+                    {t('IMPORT')}
+                  </NativeText>
+                </View>
+              </NativeTouch>
+            )}
           </View>
-        </NativeView>
-      </BackgroundImage>
+          <NativeText
+            color="textPrimary"
+            size="xsm"
+            style={{
+              textAlign: 'center',
+              fontSize: theme.fontSizes.xsm,
+              color: `#fff`,
+            }}>
+            Only file's with extension .geojson are allowed.
+          </NativeText>
+        </View>
+      </NativeView>
+    </BackgroundImage>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-export type ColorValues = "primary" | "background" | "textPrimary" | "textSecondary"
+export type ColorValues = "primary" | "background" | "textPrimary" | "textSecondary" | 'transparent'
 export type SpaceValues = "sm" | "md" | "lg" | "xsm"
 
 export interface IColorTheme {
@@ -8,6 +8,7 @@ export interface IColorTheme {
     background: string;
     textPrimary: string;
     textSecondary: string;
+    transparent: string;
 }
 
 export interface ISizeTheme {
