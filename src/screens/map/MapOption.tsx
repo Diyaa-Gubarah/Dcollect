@@ -79,6 +79,8 @@ const MapOption: React.FC<Props> = ({
         {
           backgroundColor: theme.colors.background,
           padding: theme.spacing.sm,
+          margin: theme.spacing.sm,
+          borderRadius: theme.spacing.xsm,
         },
       ]}>
       <NativeList
@@ -98,8 +100,9 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     position: 'absolute',
-    height: '100%',
+    height: '95%',
     right: 0,
+    bottom: 0,
   },
 });
 
