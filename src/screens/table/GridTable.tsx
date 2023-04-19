@@ -1,4 +1,10 @@
-import {ActivityIndicator, ScrollView, StyleProp, View} from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleProp,
+  TextStyle,
+  View,
+} from 'react-native';
 import {
   NativeList,
   NativeText,

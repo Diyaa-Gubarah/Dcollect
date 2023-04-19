@@ -7,7 +7,7 @@ import {useTheme} from '../../hooks';
 interface Props<T> {
   data: T[];
   renderItem: (item: T) => JSX.Element;
-  keyExtractor: (item: T) => string;
+  keyExtractor: (item: T, index: number) => string;
   direction?: 'horizontal' | 'vertical';
   initialNumToRender?: number;
   maxToRenderPerBatch?: number;
